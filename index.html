@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VI.B.E - Vinde Benditos do Eterno</title>
+    <title>VI.B.E - Catálogo Digital</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -14,20 +14,34 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     
-    <!-- React e Babel para rodar JSX direto no navegador -->
+    <!-- React e Babel -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
         .font-serif { font-family: 'Playfair Display', serif; }
         html { scroll-behavior: smooth; }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
+        @keyframes scaleUp {
+            from { transform: scale(1.1); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .animate-scale-up { animation: scaleUp 1.2s ease-out forwards; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 <script type="importmap">
 {
@@ -46,12 +60,13 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // --- CONFIGURAÇÕES E DADOS ---
+        // --- DADOS ---
         const CHURCH_DATA = {
-            name: "VI.B.E vinde benditos do eterno",
-            tagline: "Vinde, benditos de meu Pai, possuí por herança o reino que vos está preparado.",
+            name: "VI.B.E",
+            tagline: "Escondi a tua palavra no meu coração, para eu não pecar contra ti. Salmos 119:11",
             address: "Av. Principal, 1234, Centro",
             city: "São Paulo - SP",
+            mainImageUrl: "https://image2url.com/r2/default/images/1770498710403-934e2b75-468f-43c5-be4d-520493810869.png",
             googleMapsUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.197582313654!2d-46.6521903!3d-23.5615097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da173f47%3A0x650f51d597370335!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr",
             socials: [
                 { platform: 'Instagram', url: 'https://instagram.com', label: '@vibechurch' },
@@ -70,34 +85,88 @@
 
         // --- COMPONENTES ---
 
-        const Hero = () => (
-            <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-stone-900 text-center px-4">
+        const LandingPage = ({ onEnter }) => (
+            <div className="fixed inset-0 z-[100] bg-stone-900 flex items-center justify-center p-6 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img 
-                        src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop" 
-                        className="w-full h-full object-cover opacity-40 scale-105"
-                        alt="Igreja"
+                        src={CHURCH_DATA.mainImageUrl} 
+                        className="w-full h-full object-cover opacity-40 animate-scale-up"
+                        alt="Background"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-stone-900/60"></div>
+                    <div className="absolute inset-0 bg-gradient-to-b from-stone-900/40 via-stone-900/70 to-stone-900"></div>
                 </div>
-                
-                <div className="relative z-10 max-w-4xl animate-fade-in">
-                    <div className="mb-6 inline-block bg-amber-600/20 backdrop-blur-md border border-amber-500/30 px-4 py-1 rounded-full text-amber-400 text-xs font-bold tracking-widest uppercase">
-                        Bem-vindo à nossa casa
-                    </div>
-                    <h1 className="text-4xl md:text-7xl font-serif text-white mb-6 leading-tight drop-shadow-2xl">
+
+                <div className="relative z-10 text-center max-w-2xl animate-fade-in">
+                    <h1 className="text-6xl md:text-8xl font-serif text-white mb-6 leading-tight">
                         {CHURCH_DATA.name}
                     </h1>
-                    <p className="text-lg md:text-xl text-stone-200 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md">
-                        {CHURCH_DATA.tagline}
+                    
+                    <p className="text-stone-300 text-lg mb-12 font-light italic max-w-md mx-auto">
+                        "{CHURCH_DATA.tagline}"
                     </p>
-                    <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-                        <a href="#agenda" className="bg-amber-600 text-white px-8 py-4 rounded-full font-bold hover:bg-amber-500 transition-all shadow-xl">Nossa Agenda</a>
-                        <a href="#local" className="bg-white/10 backdrop-blur-xl border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all">Como Chegar</a>
+                    
+                    <div className="flex flex-col gap-4">
+                        <button 
+                            onClick={onEnter}
+                            className="bg-amber-600 text-white px-12 py-5 rounded-full font-bold text-lg hover:bg-amber-500 transition-all shadow-xl active:scale-95"
+                        >
+                            Acessar
+                        </button>
                     </div>
                 </div>
-            </section>
+                
+                <div className="absolute bottom-10 text-stone-500 text-[10px] tracking-widest uppercase font-bold animate-pulse">
+                    Toque no botão para entrar
+                </div>
+            </div>
         );
+
+        const Hero = () => {
+            const instagramUrl = CHURCH_DATA.socials.find(s => s.platform === 'Instagram')?.url || '#';
+            
+            return (
+                <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-stone-900 text-center px-4">
+                    <div className="absolute inset-0 z-0">
+                        <img 
+                            src={CHURCH_DATA.mainImageUrl} 
+                            className="w-full h-full object-cover opacity-50"
+                            alt="Igreja"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-stone-900/10 to-stone-900/60"></div>
+                    </div>
+                    <div className="relative z-10 max-w-4xl animate-fade-in">
+                        <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-tight drop-shadow-2xl">
+                            {CHURCH_DATA.name}
+                        </h1>
+                        <p className="text-lg md:text-xl text-stone-200 font-light max-w-2xl mx-auto mb-12 leading-relaxed italic drop-shadow-md">
+                            {CHURCH_DATA.tagline}
+                        </p>
+
+                        <div className="flex flex-wrap gap-4 justify-center">
+                            <a 
+                                href={instagramUrl} 
+                                target="_blank" 
+                                className="flex items-center gap-3 px-8 py-4 rounded-full font-bold text-white transition-all hover:scale-105 min-w-[160px] shadow-lg"
+                                style={{
+                                    background: 'radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)'
+                                }}
+                            >
+                                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                                </svg>
+                                <span>Instagram</span>
+                            </a>
+                            <a href="#local" className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all min-w-[160px]">
+                                Localização
+                            </a>
+                            <a href="#agenda" className="bg-white text-stone-900 px-8 py-4 rounded-full font-bold hover:bg-stone-50 transition-all min-w-[160px] shadow-lg">
+                                Programação
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
 
         const Schedule = () => (
             <section id="agenda" className="py-20 px-4 bg-white">
@@ -127,12 +196,11 @@
         const Socials = () => (
             <section className="py-20 px-4 bg-stone-50">
                 <div className="max-w-6xl mx-auto text-center">
-                    <h2 className="text-3xl font-serif text-stone-800 mb-12">Siga-nos nas Redes Sociais</h2>
+                    <h2 className="text-3xl font-serif text-stone-800 mb-12">Conecte-se Conosco</h2>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {CHURCH_DATA.socials.map((s, i) => (
                             <a key={i} href={s.url} target="_blank" className="p-8 bg-white rounded-3xl border border-stone-100 hover:shadow-lg transition-all group">
-                                <div className="text-2xl font-black mb-2 text-stone-300 group-hover:text-amber-600 transition-colors">{s.platform[0]}</div>
-                                <p className="font-bold text-stone-800">{s.platform}</p>
+                                <p className="font-bold text-stone-800 group-hover:text-amber-600">{s.platform}</p>
                                 <p className="text-xs text-stone-400 mt-1">{s.label}</p>
                             </a>
                         ))}
@@ -145,45 +213,41 @@
             <section id="local" className="py-20 px-4 bg-white">
                 <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h2 className="text-4xl font-serif text-stone-800 mb-6">Venha nos Visitar</h2>
-                        <div className="space-y-6">
-                            <div className="flex items-start gap-4">
-                                <span className="text-2xl">📍</span>
-                                <div>
-                                    <p className="font-bold text-stone-800">Endereço</p>
-                                    <p className="text-stone-500">{CHURCH_DATA.address}</p>
-                                    <p className="text-stone-500">{CHURCH_DATA.city}</p>
-                                </div>
-                            </div>
+                        <h2 className="text-4xl font-serif text-stone-800 mb-6 text-center md:text-left">Localização</h2>
+                        <p className="text-stone-500 mb-8 text-center md:text-left">{CHURCH_DATA.address}, {CHURCH_DATA.city}</p>
+                        <div className="text-center md:text-left">
+                          <a 
+                              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CHURCH_DATA.address)}`} 
+                              target="_blank"
+                              className="inline-block bg-stone-900 text-white px-10 py-4 rounded-xl font-bold hover:bg-stone-800 transition-all shadow-lg"
+                          >
+                              Ver no Mapa
+                          </a>
                         </div>
-                        <a 
-                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CHURCH_DATA.address)}`} 
-                            target="_blank"
-                            className="inline-block mt-8 bg-stone-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-stone-800 transition-all"
-                        >
-                            Ver no Google Maps
-                        </a>
                     </div>
-                    <div className="h-96 rounded-3xl overflow-hidden border-8 border-white shadow-xl">
-                        <iframe 
-                            src={CHURCH_DATA.googleMapsUrl}
-                            width="100%" height="100%" style={{ border: 0 }} loading="lazy"
-                        ></iframe>
+                    <div className="h-80 rounded-3xl overflow-hidden border shadow-xl">
+                        <iframe src={CHURCH_DATA.googleMapsUrl} width="100%" height="100%" style={{ border: 0 }} loading="lazy"></iframe>
                     </div>
                 </div>
             </section>
         );
 
         const App = () => {
+            const [showCatalog, setShowCatalog] = useState(false);
+
+            if (!showCatalog) {
+                return <LandingPage onEnter={() => setShowCatalog(true)} />;
+            }
+
             return (
-                <div className="min-h-screen">
+                <div className="min-h-screen animate-fade-in">
                     <Hero />
                     <Schedule />
                     <Socials />
                     <Location />
-                    <footer className="py-12 bg-stone-900 text-center text-stone-500 border-t border-stone-800">
-                        <p className="font-serif text-white mb-2">{CHURCH_DATA.name}</p>
-                        <p className="text-xs uppercase tracking-widest">&copy; {new Date().getFullYear()} - Todos os direitos reservados</p>
+                    <footer className="py-12 bg-stone-900 text-center text-stone-500">
+                        <p className="font-serif text-white mb-2 uppercase tracking-widest text-sm">VI.B.E</p>
+                        <p className="text-[10px] uppercase tracking-widest">&copy; {new Date().getFullYear()} - Catálogo Digital</p>
                     </footer>
                 </div>
             );
