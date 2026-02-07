@@ -5,33 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VI.B.E - Vinde Benditos do Eterno</title>
-    <meta name="description" content="Catálogo digital da Igreja VI.B.E. Cronograma, redes sociais e localização.">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <!-- React e Babel para rodar JSX direto no navegador -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
         body { font-family: 'Inter', sans-serif; }
         .font-serif { font-family: 'Playfair Display', serif; }
         html { scroll-behavior: smooth; }
-        .animate-fade-in {
-            animation: fadeIn 1s ease-out forwards;
-        }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
     </style>
-    <!-- Shim para evitar erro 'process is not defined' no navegador -->
-    <script>
-      window.process = { env: { API_KEY: "" } };
-    </script>
 <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
     "@google/genai": "https://esm.sh/@google/genai@^1.40.0"
   }
 }
@@ -39,7 +42,155 @@
 </head>
 <body class="bg-stone-50 text-stone-900">
     <div id="root"></div>
-    <!-- Note o ./ antes do nome do arquivo para garantir caminho relativo -->
-    <script type="module" src="./index.tsx"></script>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- CONFIGURAÇÕES E DADOS ---
+        const CHURCH_DATA = {
+            name: "VI.B.E vinde benditos do eterno",
+            tagline: "Vinde, benditos de meu Pai, possuí por herança o reino que vos está preparado.",
+            address: "Av. Principal, 1234, Centro",
+            city: "São Paulo - SP",
+            googleMapsUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3657.197582313654!2d-46.6521903!3d-23.5615097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c8da173f47%3A0x650f51d597370335!2sAv.%20Paulista%2C%20S%C3%A3o%20Paulo%20-%20SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr",
+            socials: [
+                { platform: 'Instagram', url: 'https://instagram.com', label: '@vibechurch' },
+                { platform: 'YouTube', url: 'https://youtube.com', label: 'VI.B.E Channel' },
+                { platform: 'Facebook', url: 'https://facebook.com', label: '/vibechurch' },
+                { platform: 'WhatsApp', url: 'https://wa.me/5511999999999', label: 'Fale Conosco' },
+            ],
+            schedule: [
+                { day: 'Domingo', time: '09:00', activity: 'Escola Bíblica Dominical', desc: 'Estudo profundo da Palavra.' },
+                { day: 'Domingo', time: '18:00', activity: 'Culto de Celebração', desc: 'Louve e receba uma mensagem de fé.' },
+                { day: 'Terça-feira', time: '19:30', activity: 'Reunião de Oração', desc: 'Intercessão em comunidade.' },
+                { day: 'Quinta-feira', time: '20:00', activity: 'Culto da Família', desc: 'Fortalecendo os laços em Cristo.' },
+                { day: 'Sábado', time: '19:00', activity: 'Rede de Jovens', desc: 'Conexão e propósito para juventude.' },
+            ]
+        };
+
+        // --- COMPONENTES ---
+
+        const Hero = () => (
+            <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-stone-900 text-center px-4">
+                <div className="absolute inset-0 z-0">
+                    <img 
+                        src="https://images.unsplash.com/photo-1438232992991-995b7058bbb3?q=80&w=2073&auto=format&fit=crop" 
+                        className="w-full h-full object-cover opacity-40 scale-105"
+                        alt="Igreja"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-900 via-transparent to-stone-900/60"></div>
+                </div>
+                
+                <div className="relative z-10 max-w-4xl animate-fade-in">
+                    <div className="mb-6 inline-block bg-amber-600/20 backdrop-blur-md border border-amber-500/30 px-4 py-1 rounded-full text-amber-400 text-xs font-bold tracking-widest uppercase">
+                        Bem-vindo à nossa casa
+                    </div>
+                    <h1 className="text-4xl md:text-7xl font-serif text-white mb-6 leading-tight drop-shadow-2xl">
+                        {CHURCH_DATA.name}
+                    </h1>
+                    <p className="text-lg md:text-xl text-stone-200 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+                        {CHURCH_DATA.tagline}
+                    </p>
+                    <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="#agenda" className="bg-amber-600 text-white px-8 py-4 rounded-full font-bold hover:bg-amber-500 transition-all shadow-xl">Nossa Agenda</a>
+                        <a href="#local" className="bg-white/10 backdrop-blur-xl border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all">Como Chegar</a>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Schedule = () => (
+            <section id="agenda" className="py-20 px-4 bg-white">
+                <div className="max-w-4xl mx-auto">
+                    <div className="text-center mb-12">
+                        <span className="text-amber-600 font-bold tracking-widest text-xs uppercase bg-amber-50 px-3 py-1 rounded-full">Cronograma</span>
+                        <h2 className="text-3xl md:text-4xl font-serif text-stone-800 mt-4">Nossa Programação</h2>
+                    </div>
+                    <div className="space-y-4">
+                        {CHURCH_DATA.schedule.map((item, i) => (
+                            <div key={i} className="flex flex-col md:flex-row md:items-center p-6 bg-stone-50 rounded-2xl border border-stone-100 hover:border-amber-200 transition-all">
+                                <div className="md:w-32 mb-2 md:mb-0">
+                                    <p className="text-amber-600 font-bold text-xs uppercase">{item.day}</p>
+                                    <p className="text-2xl font-bold text-stone-800">{item.time}</p>
+                                </div>
+                                <div className="md:ml-8 md:border-l md:pl-8 flex-grow">
+                                    <h3 className="text-xl font-bold text-stone-800">{item.activity}</h3>
+                                    <p className="text-stone-500 text-sm mt-1">{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Socials = () => (
+            <section className="py-20 px-4 bg-stone-50">
+                <div className="max-w-6xl mx-auto text-center">
+                    <h2 className="text-3xl font-serif text-stone-800 mb-12">Siga-nos nas Redes Sociais</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {CHURCH_DATA.socials.map((s, i) => (
+                            <a key={i} href={s.url} target="_blank" className="p-8 bg-white rounded-3xl border border-stone-100 hover:shadow-lg transition-all group">
+                                <div className="text-2xl font-black mb-2 text-stone-300 group-hover:text-amber-600 transition-colors">{s.platform[0]}</div>
+                                <p className="font-bold text-stone-800">{s.platform}</p>
+                                <p className="text-xs text-stone-400 mt-1">{s.label}</p>
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </section>
+        );
+
+        const Location = () => (
+            <section id="local" className="py-20 px-4 bg-white">
+                <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 className="text-4xl font-serif text-stone-800 mb-6">Venha nos Visitar</h2>
+                        <div className="space-y-6">
+                            <div className="flex items-start gap-4">
+                                <span className="text-2xl">📍</span>
+                                <div>
+                                    <p className="font-bold text-stone-800">Endereço</p>
+                                    <p className="text-stone-500">{CHURCH_DATA.address}</p>
+                                    <p className="text-stone-500">{CHURCH_DATA.city}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <a 
+                            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(CHURCH_DATA.address)}`} 
+                            target="_blank"
+                            className="inline-block mt-8 bg-stone-900 text-white px-8 py-3 rounded-xl font-bold hover:bg-stone-800 transition-all"
+                        >
+                            Ver no Google Maps
+                        </a>
+                    </div>
+                    <div className="h-96 rounded-3xl overflow-hidden border-8 border-white shadow-xl">
+                        <iframe 
+                            src={CHURCH_DATA.googleMapsUrl}
+                            width="100%" height="100%" style={{ border: 0 }} loading="lazy"
+                        ></iframe>
+                    </div>
+                </div>
+            </section>
+        );
+
+        const App = () => {
+            return (
+                <div className="min-h-screen">
+                    <Hero />
+                    <Schedule />
+                    <Socials />
+                    <Location />
+                    <footer className="py-12 bg-stone-900 text-center text-stone-500 border-t border-stone-800">
+                        <p className="font-serif text-white mb-2">{CHURCH_DATA.name}</p>
+                        <p className="text-xs uppercase tracking-widest">&copy; {new Date().getFullYear()} - Todos os direitos reservados</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
 </body>
 </html>
