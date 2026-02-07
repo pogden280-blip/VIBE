@@ -1,0 +1,7 @@
+{
+  "name": "Catálogo Digital da Igreja",
+  "description": "Uma plataforma moderna e acolhedora para membros e visitantes acessarem o cronograma, redes sociais, localização e receberem mensagens bíblicas inspiradas por IA.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
