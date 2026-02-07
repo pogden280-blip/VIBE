@@ -22,6 +22,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <!-- Shim para evitar erro 'process is not defined' no navegador -->
+    <script>
+      window.process = { env: { API_KEY: "" } };
+    </script>
 <script type="importmap">
 {
   "imports": {
@@ -32,12 +36,10 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body class="bg-stone-50 text-stone-900">
     <div id="root"></div>
-    <!-- Script principal do aplicativo -->
-    <script type="module" src="index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
+    <!-- Note o ./ antes do nome do arquivo para garantir caminho relativo -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>
