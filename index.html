@@ -159,6 +159,8 @@
               { name: 'Ministério Infantil', url: 'https://www.instagram.com/min.infantil_vibe?igsh=bnZseWFtb2M2MmYw' },
               { name: 'Pastor Gerson', url: 'https://www.instagram.com/gersonjunior_vi.b.e?igsh=aDVmYWozN3plZG1k' },
               { name: 'Pastora Rafaela', url: 'https://www.instagram.com/rafaela_vibe?igsh=dnJhNWZhNnZ1ands' },
+              { name: 'Culto Mulheres', url: 'https://www.instagram.com/euamoumasegundafeira?igsh=NDR5MnRxZ2pwZXFu' },
+              { name: 'Juventude Vibe', url: 'https://www.instagram.com/juventudevibe_?igsh=MjhzOWZieThteHpm' },
             ];
             
             return (
@@ -212,13 +214,13 @@
                         </div>
 
                         {showInsta && (
-                          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-fade-in overflow-visible">
+                          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 animate-fade-in overflow-visible">
                             {instagramLinks.map((link, idx) => (
                               <a 
                                 key={idx}
                                 href={link.url}
                                 target="_blank"
-                                className="flex items-center justify-center p-4 bg-gradient-to-tr from-[#f09433]/80 via-[#dc2743]/80 to-[#bc1888]/80 backdrop-blur-sm border border-white/20 rounded-xl text-white font-semibold text-sm hover:scale-105 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all shadow-lg"
+                                className="flex items-center justify-center p-4 bg-gradient-to-tr from-[#f09433]/80 via-[#dc2743]/80 to-[#bc1888]/80 backdrop-blur-sm border border-white/20 rounded-xl text-white font-semibold text-sm hover:scale-105 hover:bg-gradient-to-tr hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] transition-all shadow-lg text-center"
                               >
                                 {link.name}
                               </a>
